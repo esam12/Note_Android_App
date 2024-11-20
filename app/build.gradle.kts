@@ -60,11 +60,16 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    implementation(libs.androidx.navigation.compose)
+
+
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)
 
     // Dagger Hilt
     implementation(libs.hilt.android)
+    implementation (libs.androidx.hilt.navigation.compose)
+
 
     // Room
     implementation(libs.androidx.room.runtime)
