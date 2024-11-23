@@ -37,6 +37,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.cleanarchitecturenoteapp.feature_note.presentation.notes.components.NoteItem
 import com.example.cleanarchitecturenoteapp.feature_note.presentation.notes.components.OrderSection
+import com.example.cleanarchitecturenoteapp.feature_note.presentation.util.Screen
 import kotlinx.coroutines.launch
 
 
@@ -51,7 +52,9 @@ fun NoteScreen(
 
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(onClick = {},Modifier.background(MaterialTheme.colorScheme.primary)
+            FloatingActionButton(onClick = {
+                navController.navigate(Screen.AddEditNoteScreen.route)
+            },Modifier.background(MaterialTheme.colorScheme.primary)
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add note")
             }
@@ -94,9 +97,11 @@ fun NoteScreen(
                 Spacer(Modifier.height(16.dp))
 
                 LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                    items(state.notes) {
-                        NoteItem(note = it, modifier = Modifier.fillMaxWidth().clickable {  }, onDeleteClick = {
-                            viewModel.onEvent(NotesEvent.DeleteNote(it))
+                    items(state.notes) { note ->
+                        NoteItem(note = note, modifier = Modifier.fillMaxWidth().clickable {
+                            navController.navigate(Screen.AddEditNoteScreen.route + "?noteId=${note.id}&noteColor=${note.color}")
+                        }, onDeleteClick = {
+                            viewModel.onEvent(NotesEvent.DeleteNote(note))
                             scope.launch {
                                 val result =  snackbarHostState.showSnackbar(message = "Note deleted", actionLabel = "Undo")
                                 if(result == SnackbarResult.ActionPerformed) {
